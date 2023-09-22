@@ -1,0 +1,54 @@
+- show product
+  - tin mới nhất: if createAt < 1 weeks
+  - tin cũ nhất: if createAt > 1 weeks
+  - pagination
+- filter product
+  - by category
+  - by price
+  - by location
+- search product
+  - by name
+  - by country
+- add product
+- edit product
+- delete product
+- login
+- logout
+- sort product  (ASC, DESC)
+  - by name (A-Z, Z-A)
+  - by price
+  - by createAt
+
+
+## Temp
+
+desktop first
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 320px) {
+  .container {
+    width: 100%;
+  }
+}
+
+mobile first
+@media (min-width: 320px) {
+  .container {
+    width: 100%;
+  }
+}
+
+@media (min-width: 760px) {
+  .container {
+    width: 100%;
+  }
+}
+
+ 
+- mobile first: 320px -> 768px -> 1024px -> 1440px (min-width)
+- desktop first: 1920px -> 1440px -> 1024px -> 768px -> 320px (max-width)

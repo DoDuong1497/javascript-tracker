@@ -1,0 +1,20 @@
+- show product => DONE
+  - tin mới nhất: if createAt < 1 weeks
+  - tin cũ nhất: if createAt > 1 weeks
+  - pagination
+- filter product
+  - by category
+  - by price
+  - by location
+- search product
+  - by name
+  - by country
+- add product
+- edit product
+- delete product => DONE
+- login
+- logout
+- sort product  (ASC, DESC)
+  - by name (A-Z, Z-A)
+  - by price
+  - by createAt

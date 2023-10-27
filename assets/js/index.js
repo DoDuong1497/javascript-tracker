@@ -1,4 +1,4 @@
-const todos = [
+let todos = [
   {
     id: Math.floor(Math.random() * 1000),
     title: 'Learn JavaScript',
@@ -45,8 +45,9 @@ function renderTrackerList(data = []) {
                 >
                 Open
                 </button>
-                <button 
-                    class="btn btn--delete" 
+                <button   
+                  class="btn btn--delete"
+                  onclick="deleteIssue(${item.id})"
                 >Delete</button>
               </div>
             </div>
@@ -80,8 +81,21 @@ issueForm.addEventListener('submit', (event) => {
     ]
   }
   const newTodos = [...todos, todoItem]; // add item to array
+  todos.push(todoItem); 
+
   renderTrackerList(newTodos);
 })
+
+function deleteIssue(todoId) {
+  // const todoSliced = [...todos].filter(todo => todo.id !== todoId); // remove item from array
+  // todos = todoSliced;
+  // renderTrackerList(todoSliced);
+  const todoIndex = todos.findIndex(todo => todo.id === todoId);
+  if(todoIndex !== -1) {
+    todos.splice(todoIndex, 1);
+  }
+  renderTrackerList(todos);
+}
 
 // btnAdd.addEventListener('click', () => {
 //   console.log('click');

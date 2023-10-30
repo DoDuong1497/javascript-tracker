@@ -17,6 +17,7 @@ let todos = [
 
 const issuesList = document.getElementById('issuesList');
 const issueForm = document.getElementById('issueForm');
+const sortValue = document.getElementById('sort-value');
 // const btnAdd = document.getElementById('btnAdd');
 
 function renderTrackerList(data = []) {
@@ -86,6 +87,7 @@ issueForm.addEventListener('submit', (event) => {
   renderTrackerList(newTodos);
 })
 
+// delete todos
 function deleteIssue(todoId) {
   // const todoSliced = [...todos].filter(todo => todo.id !== todoId); // remove item from array
   // todos = todoSliced;
@@ -96,6 +98,25 @@ function deleteIssue(todoId) {
   }
   renderTrackerList(todos);
 }
+
+// sort todo
+sortValue.addEventListener('change', event => {
+  // const value = e.target.value; // es5
+  const { value } = event.target
+  const todoSorted = [...todos];
+
+  todoSorted.sort((a, b) => {
+    if(a.title.toLowerCase() > b.title.toLowerCase()) {
+      return value === 'asc' ? 1 : -1; // es6
+    }
+    if(a.title.toLowerCase() < b.title.toLowerCase()) {
+      return value === 'asc' ? -1 : 1; // es6
+    }
+    return 0
+  })
+  renderTrackerList(todoSorted);
+})
+
 
 // btnAdd.addEventListener('click', () => {
 //   console.log('click');

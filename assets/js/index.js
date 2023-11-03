@@ -18,6 +18,7 @@ let todos = [
 const issuesList = document.getElementById('issuesList');
 const issueForm = document.getElementById('issueForm');
 const sortValue = document.getElementById('sort-value');
+const searchBox = document.getElementById('search-box');
 // const btnAdd = document.getElementById('btnAdd');
 
 function renderTrackerList(data = []) {
@@ -117,6 +118,14 @@ sortValue.addEventListener('change', event => {
   renderTrackerList(todoSorted);
 })
 
+
+// search
+searchBox.addEventListener('input', e => {
+  const searchValue = e.target.value.toLowerCase();
+  const clonedTodos = [...todos];
+  const todoFiltered = clonedTodos.filter(todo => todo.title.toLowerCase().includes(searchValue));
+  renderTrackerList(todoFiltered);
+})
 
 // btnAdd.addEventListener('click', () => {
 //   console.log('click');

@@ -12,6 +12,20 @@ let todos = [
         avatar: 'https://i.pravatar.cc/150?img=3'
       }
     ]
+  },
+  {
+    id: Math.floor(Math.random() * 1000),
+    title: 'Learn JavaScript',
+    completed: true,
+    description: 'Learn JavaScript',
+    severity: 'low',
+    author: [
+      {
+        id: Math.floor(Math.random() * 1000),
+        name: 'John Doe',
+        avatar: 'https://i.pravatar.cc/150?img=3'
+      }
+    ]
   }
 ]
 
@@ -19,6 +33,10 @@ const issuesList = document.getElementById('issuesList');
 const issueForm = document.getElementById('issueForm');
 const sortValue = document.getElementById('sort-value');
 const searchBox = document.getElementById('search-box');
+const filterAllBtn = document.getElementById('all-status');
+const filterOpenBtn = document.getElementById('open-status');
+const filterClosedBtn = document.getElementById('close-status');
+
 // const btnAdd = document.getElementById('btnAdd');
 
 function renderTrackerList(data = []) {
@@ -127,6 +145,24 @@ searchBox.addEventListener('input', e => {
   renderTrackerList(todoFiltered);
 })
 
+// filter
+filterAllBtn.addEventListener('click', () => {
+  renderTrackerList(todos);
+})
+
+filterClosedBtn.addEventListener('click', () => {
+  const todoFiltered = [...todos].filter(todo => todo.completed);
+  renderTrackerList(todoFiltered);
+})
+
+filterOpenBtn.addEventListener('click', () => {
+  const todoFiltered = [...todos].filter(todo => !todo.completed);
+  renderTrackerList(todoFiltered);
+})
+
+
+
+console.log('todos: ', todos)
 // btnAdd.addEventListener('click', () => {
 //   console.log('click');
 // })

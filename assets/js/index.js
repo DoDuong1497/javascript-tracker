@@ -10,6 +10,22 @@ const filterClosedBtn = document.getElementById('close-status');
 
 // const btnAdd = document.getElementById('btnAdd');
 
+
+// fetch data
+function fetchData() {
+  fetch('https://tony-auth-express.vercel.app/api/todo', {
+    method: 'GET',
+  })
+  .then(response => response.json())
+  .then(data => {
+    // todos.push(...data.data)
+    renderTrackerList(data.data);
+  })
+    
+}
+fetchData();
+
+
 function renderTrackerList(data = []) {
   issuesList.innerHTML = ''; // reset list
 
@@ -23,7 +39,7 @@ function renderTrackerList(data = []) {
             </div>
         </div>
         <div class="list-item-content">
-            <h3 class="issue-name">description</h3>
+            <h3 class="issue-name">${item.description}</h3>
             <div class="list-item-severity">${item.severity}</div>
             <div>
               <div class="list-item-group-author">
@@ -38,7 +54,7 @@ function renderTrackerList(data = []) {
                 </button>
                 <button   
                   class="btn btn--delete"
-                  onclick="deleteIssue(${item.id})"
+                  onclick="deleteIssue('${item._id}')"
                 >Delete</button>
               </div>
             </div>
@@ -58,35 +74,61 @@ issueForm.addEventListener('submit', (event) => {
   const severity = document.getElementById('severity').value;
 
   const todoItem = {
-    id: Math.floor(Math.random() * 1000),
-    completed: false,
-    title, // shorthand property if key and value are the same
-    description: description,
-    severity: severity,
-    author: [
-      {
-        id: Math.floor(Math.random() * 1000),
-        name: author,
-        avatar: 'https://i.pravatar.cc/150?img=3'
-      }
-    ]
+    data: {  
+      title, // shorthand property if key and value are the same
+      description,
+      severity,
+      author
+    }
   }
-  const newTodos = [...todos, todoItem]; // add item to array
-  todos.push(todoItem); 
 
-  renderTrackerList(newTodos);
+  // way 1 : call api get list again after add new item
+  fetch('https://tony-auth-express.vercel.app/api/todo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(todoItem)
+  })
+  .then(() => {
+    fetchData();
+  })
+
+   // way 2: push new item to array after add new item
+  //  fetch('https://tony-auth-express.vercel.app/api/todo', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(todoItem)
+  //   })
+  //   .then(response => response.json())
+  //   .then((data) => {
+  //     todos.push(data.data);
+  //     renderTrackerList(todos);
+  //   })
 })
+
+
 
 // delete todos
 function deleteIssue(todoId) {
-  // const todoSliced = [...todos].filter(todo => todo.id !== todoId); // remove item from array
+  // const todoSliced = [...todos].filter(todo => todo._id !== todoId); // remove item from array
   // todos = todoSliced;
   // renderTrackerList(todoSliced);
-  const todoIndex = todos.findIndex(todo => todo.id === todoId);
-  if(todoIndex !== -1) {
-    todos.splice(todoIndex, 1);
-  }
-  renderTrackerList(todos);
+
+  fetch(`https://tony-auth-express.vercel.app/api/todo/${todoId}`, {
+    method: 'DELETE',
+  })
+  .then(() => {
+    fetchData();
+  })
+
+  // const todoIndex = todos.findIndex(todo => todo._id === todoId);
+  // if(todoIndex !== -1) {
+  //   todos.splice(todoIndex, 1);
+  // }
+  // renderTrackerList(todos);
 }
 
 // sort todo

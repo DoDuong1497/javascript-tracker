@@ -143,6 +143,16 @@ img {
   cursor: pointer;
 }
 
+.btn.btn--completed {
+  background-color: #ababab;
+  cursor: not-allowed;
+}
+
+.btn.btn--completed:hover {
+  background-color: #ababab;
+  border-color: #ababab;
+}
+
 hr {
   border: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.1);

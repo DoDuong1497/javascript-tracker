@@ -8,8 +8,6 @@ const filterAllBtn = document.getElementById('all-status');
 const filterOpenBtn = document.getElementById('open-status');
 const filterClosedBtn = document.getElementById('close-status');
 
-// const btnAdd = document.getElementById('btnAdd');
-
 
 // fetch data
 function fetchData() {
@@ -19,9 +17,9 @@ function fetchData() {
   .then(response => response.json())
   .then(data => {
     // todos.push(...data.data)
-    renderTrackerList(data.data);
+    todos = data.data;
+    renderTrackerList(todos);
   })
-    
 }
 fetchData();
 
@@ -47,10 +45,11 @@ function renderTrackerList(data = []) {
               </div>
               <div class="list-item-group-btn">
                 <button 
-                    id="changeSttBtn" 
-                    class="btn btn--close" 
+                  id="changeSttBtn" 
+                  class="${item.status === 'new' ? 'btn btn--close' : 'btn btn--completed'}"
+                  onclick="${item.status === 'new' ? () => closeIssue('${item._id}') : () => {}}"
                 >
-                Open
+                  ${item.status === 'new' ? 'Close' : 'Completed'}
                 </button>
                 <button   
                   class="btn btn--delete"
@@ -78,7 +77,8 @@ issueForm.addEventListener('submit', (event) => {
       title, // shorthand property if key and value are the same
       description,
       severity,
-      author
+      author,
+      status: 'new'
     }
   }
 
@@ -113,22 +113,37 @@ issueForm.addEventListener('submit', (event) => {
 
 // delete todos
 function deleteIssue(todoId) {
-  // const todoSliced = [...todos].filter(todo => todo._id !== todoId); // remove item from array
-  // todos = todoSliced;
-  // renderTrackerList(todoSliced);
-
   fetch(`https://tony-auth-express.vercel.app/api/todo/${todoId}`, {
     method: 'DELETE',
   })
   .then(() => {
     fetchData();
   })
+}
 
-  // const todoIndex = todos.findIndex(todo => todo._id === todoId);
-  // if(todoIndex !== -1) {
-  //   todos.splice(todoIndex, 1);
-  // }
-  // renderTrackerList(todos);
+// update todos
+function closeIssue(todoId) {
+  const todoItem = todos.find(todo => todo._id === todoId);
+  const bodyData = {
+    data: {
+      ...todoItem,
+      status: 'completed'
+    }
+  }
+
+  fetch(`https://tony-auth-express.vercel.app/api/todo/${todoId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(bodyData)
+  })
+  .then(() => {
+    fetchData();
+  })
+  .catch(err => {
+    console.log(`Can't update todo`, err)
+  })
 }
 
 // sort todo
@@ -173,11 +188,3 @@ filterOpenBtn.addEventListener('click', () => {
   renderTrackerList(todoFiltered);
 })
 
-
-
-console.log('todos: ', todos)
-// btnAdd.addEventListener('click', () => {
-//   console.log('click');
-// })
-// init data
-renderTrackerList(todos);
